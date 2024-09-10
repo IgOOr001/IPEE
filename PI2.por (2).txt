@@ -1,0 +1,77 @@
+programa
+{   inclua biblioteca Matematica --> Mt
+	funcao inicio ()
+	{
+		real somaDeTermos=0.0,somaDeTermos1=0.0,aux,aux1
+		real pi_atual,pi_anterior,precisao
+		inteiro contagem=1,contagem1=2
+		const real PI= 3.141592653589793
+		logico repetir=verdadeiro 
+		
+		
+		escreva("Insira a precisão para o termos de π:")
+		leia(precisao)
+		escreva("\n")
+		
+		
+		faca 
+		{
+		   /*
+			se(contagem%2==0)
+			
+			{
+				escreva("-4/(",2*contagem-1,")")
+				
+
+			}
+			senao
+			{
+				
+				escreva("+4/(",(2*contagem-1),")")
+						
+			}
+		  
+		    */
+
+		
+		
+
+			 // processamento 
+			 
+			
+	     	      aux1= 1/Mt.potencia(10, precisao)
+
+			      pi_anterior=Mt.potencia(-1.0,(contagem+1.0))*(4/(2.0*contagem-1.0))
+			
+			 	
+			      pi_atual=  Mt.potencia(-1.0,(contagem1-2.0))*(4/(2.0*(contagem1)-1.0))
+			      
+				  
+			      somaDeTermos+=pi_atual 
+				  somaDeTermos1+=pi_anterior
+				  aux=4.0-somaDeTermos
+				  
+				  se(Mt.valor_absoluto(aux-somaDeTermos1)<aux1)
+				  {
+				  	
+				  	  repetir=falso 
+				  	
+				  }	
+				  	   
+
+		    
+			 
+			 contagem++
+			 contagem1++
+			 
+
+			
+	     }enquanto(repetir)
+		
+		
+		   escreva("Valor exato de π =",PI)
+		   escreva("\nprecisao:",aux1)
+		   escreva("\nValor de π com precisão de ",precisao," casas : ",Mt.arredondar(aux,precisao))
+		
+	}
+}
