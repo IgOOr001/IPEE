@@ -1,6 +1,8 @@
 
 programa
-{   inclua biblioteca Matematica --> Mt
+{  
+	inclua biblioteca Matematica --> Mt
+	
 	funcao inicio ()
 	{
 		real somaDeTermosAtuais=0.0,somaDeTermosAnteriores=0.0,aux_Soma,auxDePrecisao
@@ -35,35 +37,28 @@ programa
 			  
 			    */
 
-		
-		
-
 			     // processamento 
 			 
-			
-	     	      auxDePrecisao= 1/Mt.potencia(10.0, precisao)
-
-			      pi_anterior=Mt.potencia(-1.0,(contagemAtual+1.0))*(4/(2.0*contagemAtual-1.0))
-			
-			      pi_atual=  Mt.potencia(-1.0,(contagemAnterior-2.0))*(4/(2.0*(contagemAnterior)-1.0))
+				auxDePrecisao= 1/Mt.potencia(10.0, precisao)
+				
+				pi_anterior=Mt.potencia(-1.0,(contagemAtual+1.0))*(4/(2.0*contagemAtual-1.0))
+				
+				pi_atual=  Mt.potencia(-1.0,(contagemAnterior-2.0))*(4/(2.0*(contagemAnterior)-1.0))
 			      
 				  
-			      somaDeTermosAtuais+=pi_atual 
-				 somaDeTermosAnteriores+=pi_anterior
-				 aux_Soma=4.0-somaDeTermosAtuais
+				somaDeTermosAtuais+=pi_atual 
+				somaDeTermosAnteriores+=pi_anterior
+				aux_Soma=4.0-somaDeTermosAtuais
 				  
-				  se(Mt.valor_absoluto(aux_Soma-somaDeTermosAnteriores)<auxDePrecisao)
-				  {
-				  	
-				  	  repetir=falso 
-				  	
-				  }	
+				se(Mt.valor_absoluto(aux_Soma-somaDeTermosAnteriores)<auxDePrecisao)
+				{
+				
+ 					 repetir=falso 
+				
+				}	
 				  	   
-
-		    
-			 
-			 contagemAtual++
-			 contagemAnterior++
+				contagemAtual++
+				contagemAnterior++
 			 
 
 			
