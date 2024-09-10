@@ -1,0 +1,220 @@
+programa
+{
+	
+	funcao inicio()
+	{
+		const inteiro TAMANHO_LINHAS=100
+		const inteiro TAMANHO_COLUNAS=100
+		const inteiro TAMANHO_MAX=100
+		real matrizM[TAMANHO_LINHAS][TAMANHO_COLUNAS]
+		real matrizTranspostaDeM[TAMANHO_LINHAS][TAMANHO_COLUNAS]
+		real matrizProdutoP[TAMANHO_LINHAS][TAMANHO_COLUNAS]
+		real vetorDiagonalPrincipal[TAMANHO_MAX],vetorDiagonalSecundaria[TAMANHO_MAX]
+		real somaDaDiagonalPrincipal=0.0,somaDaDiagonalSecundaria=0.0
+		inteiro quantidadeDeLinhas,quantidadeDeColunas
+		inteiro x=0,y=0
+          
+          
+        
+          escreva("O tamanho maximo da matriz M é: vetor [",TAMANHO_LINHAS,"][",TAMANHO_COLUNAS,"]\n")
+          logico entradaErradadasLinhasEcolunas
+          faca
+          {
+	          escreva("\nO Insira a quantidade de linhas:")
+	          leia(quantidadeDeLinhas)
+	          escreva("\nO Insira a quantidade de colunas:")
+	          leia(quantidadeDeColunas)
+
+	          entradaErradadasLinhasEcolunas = (quantidadeDeLinhas<=0 ou quantidadeDeLinhas > TAMANHO_LINHAS) ou (quantidadeDeColunas<=0 ou quantidadeDeColunas > TAMANHO_COLUNAS)
+	          
+	          se(entradaErradadasLinhasEcolunas)
+	          {
+	          	 escreva("\nA linha e coluna não pode ser negativas ou passar do máximo!\n")
+	          }
+	         
+	          
+          }enquanto(entradaErradadasLinhasEcolunas)
+          escreva("\nInsira os elementos da matriz[",quantidadeDeLinhas,"][",quantidadeDeColunas,"]:\n")
+	     se(quantidadeDeLinhas!=quantidadeDeColunas)
+	     {
+	     	
+	          para(inteiro linhas_A=0;linhas_A<quantidadeDeLinhas;linhas_A++)
+	          {
+	              para(inteiro colunas_A=0;colunas_A<quantidadeDeColunas;colunas_A++)
+	              {
+	              	  escreva("Insira o elemento m",linhas_A+1,colunas_A+1,":")
+	              	  leia(matrizM[linhas_A][colunas_A])
+	              	
+	              }	
+	          }
+	          escreva("\n Matriz M:\n")
+	          para(inteiro linhas_A=0;linhas_A<quantidadeDeLinhas;linhas_A++)
+	          {
+	              para(inteiro colunas_A=0;colunas_A<quantidadeDeColunas;colunas_A++)
+	              {
+	              	  escreva("[",matrizM[linhas_A][colunas_A],"]")
+	              	  matrizTranspostaDeM[colunas_A][linhas_A]=matrizM[linhas_A][colunas_A]
+	              }
+	              escreva("\n")	
+	          }
+	          escreva("\n Matriz M transposta :\n")
+	          para(inteiro colunas_A=0;colunas_A<quantidadeDeColunas;colunas_A++)
+	          {
+	              para(inteiro linhas_A=0;linhas_A<quantidadeDeLinhas;linhas_A++)
+	              {
+	              	  escreva("[",matrizTranspostaDeM[colunas_A][linhas_A],"]")
+	              	  
+	              }
+	              escreva("\n")	
+	          }             
+	          //matriz_produto será uma matriz axa;          
+		     escreva("\nA Matrizes quadrada P:\n")
+		     para(inteiro linhas=0;linhas<quantidadeDeLinhas;linhas++)
+		     {
+			   	  para(inteiro colunas=0;colunas<quantidadeDeLinhas;colunas++)
+			   	  {
+			   	  	 matrizProdutoP[linhas][colunas]=0.0
+			   	  	 para(inteiro k=0;k<quantidadeDeColunas;k++)
+			   	  	 {
+			   	  		
+			   			 matrizProdutoP[linhas][colunas]+=matrizM[linhas][k]*matrizTranspostaDeM[k][colunas]
+			   	  	 }
+			   	  	 escreva("[",matrizProdutoP[linhas][colunas],"]") 	
+		   	       }
+		   	       escreva("\n")
+			 }
+			// Diagonal principal da matriz P ou M
+			escreva("\nDiagonal principal da matriz P:\n")
+		     para(inteiro linhas=0;linhas<quantidadeDeLinhas;linhas++)
+		     {
+			    para(inteiro colunas=0;colunas<quantidadeDeLinhas;colunas++)
+			    { 
+			    	  
+			    	  se(linhas==colunas)
+			    	  {
+			    	  	 escreva("[",matrizProdutoP[linhas][colunas],"]")
+			    	  	 vetorDiagonalPrincipal[x]=matrizProdutoP[linhas][colunas]
+			    	  	 somaDaDiagonalPrincipal+=matrizProdutoP[linhas][colunas]
+			    	  	 x++
+			    	  }
+		   	       escreva("\t")
+		   	       
+		   	    }
+		   	    escreva("\n")	
+		     } 
+		     
+		     escreva("\nO vetor da diagonal principal:\n")
+		     para(inteiro i=0;i<quantidadeDeLinhas;i++)
+		     {
+		         escreva("[",vetorDiagonalPrincipal[i],"]")
+		     }
+		     escreva("\n\nO soma dos elementos da diagonal principal:",somaDaDiagonalPrincipal,"\n")
+			 
+			 escreva("\nDiagonal secundaria da matriz P:\n")
+		     para(inteiro linhas=0;linhas<quantidadeDeLinhas;linhas++)
+		     {
+			    para(inteiro colunas=0;colunas<quantidadeDeLinhas;colunas++)
+			    { 
+			    	  
+			    	  se(colunas==quantidadeDeLinhas-linhas-1)
+			    	  {
+			    	  	 escreva("[",matrizProdutoP[linhas][colunas],"]")
+			    	  	 vetorDiagonalSecundaria[y]=matrizProdutoP[linhas][colunas]
+			    	  	 somaDaDiagonalSecundaria+=matrizProdutoP[linhas][colunas]
+			    	  	 
+					  //	 escreva("\n[",vetor_Diagonal_Secundaria[x], "]")
+					  	 y++
+			    	  }
+		   	       escreva("\t")
+		   		   
+		   	       
+		   	    }
+		   	    escreva("\n")	
+		     } 
+		     
+		     escreva("\nO vetor da diagonal secundária:\n")
+		     para(inteiro i=0;i<quantidadeDeLinhas;i++)
+		     {
+		         escreva("[",vetorDiagonalSecundaria[i],"]")
+		     }
+		     escreva("\n\nA soma dos elementos da diagonal principal:",somaDaDiagonalSecundaria,"\n")
+		}	
+		senao 
+		{
+	          para(inteiro linhas_A=0;linhas_A<quantidadeDeLinhas;linhas_A++)
+	          {
+	              para(inteiro colunas_A=0;colunas_A<quantidadeDeColunas;colunas_A++)
+	              {
+	              	  escreva("Insira o elemento a",linhas_A+1,colunas_A+1,":")
+	              	  leia(matrizM[linhas_A][colunas_A])
+	              	
+	              }	
+	          }
+	          escreva("\nA matriz M:\n")
+	          para(inteiro linhas_A=0;linhas_A<quantidadeDeLinhas;linhas_A++)
+	          {
+	              para(inteiro colunas_A=0;colunas_A<quantidadeDeColunas;colunas_A++)
+	              {
+	              	  escreva("[",matrizM[linhas_A][colunas_A],"]")
+	              	  
+	              }
+	              escreva("\n")	
+			  }
+			  escreva("\nDiagonal principal da matriz M:\n")
+		      para(inteiro linhas=0;linhas<quantidadeDeLinhas;linhas++)
+		      {
+			      para(inteiro colunas=0;colunas<quantidadeDeLinhas;colunas++)
+			      { 
+			    	 	   
+				    	  se(linhas==colunas)
+				    	  {
+				    	  	 escreva("[",matrizM[linhas][colunas],"]")
+				    	  	 vetorDiagonalPrincipal[x]=matrizM[linhas][colunas]
+				    	  	 somaDaDiagonalPrincipal+=matrizM[linhas][colunas]
+				    	  	 x++
+				    	  }
+		   	            escreva("\t")
+		   	       
+		   	      }
+		   	      escreva("\n")	
+			  }
+			  escreva("\nO vetor da diagonal principal:\n")
+			  para(inteiro i=0;i<quantidadeDeLinhas;i++)
+			  {
+			         escreva("[",vetorDiagonalPrincipal[i],"]")
+			  }
+			  escreva("\n\nO soma dos elementos da diagonal principal:",somaDaDiagonalPrincipal,"\n")
+				 
+			  escreva("\nDiagonal secundaria da matriz M:\n")
+			  para(inteiro linhas=0;linhas<quantidadeDeLinhas;linhas++)
+			  {
+				   para(inteiro colunas=0;colunas<quantidadeDeLinhas;colunas++)
+				   { 
+				    	  
+				       se(colunas==quantidadeDeLinhas-linhas-1)
+				       {
+				    	  	 escreva("[",matrizM[linhas][colunas],"]")
+				    	  	 vetorDiagonalSecundaria[y]=matrizM[linhas][colunas]
+				    	  	 somaDaDiagonalSecundaria+=matrizM[linhas][colunas]
+						 
+						  	 y++
+				       }
+			   	       escreva("\t")
+			   	       
+			   	    }
+			   	    escreva("\n")	
+			  } 
+			     
+			  escreva("\nO vetor da diagonal secundária:\n")
+			  para(inteiro i=0;i<quantidadeDeLinhas;i++)
+			  {
+			         escreva("[",vetorDiagonalSecundaria[i],"]")
+			  }
+			  escreva("\n\nO soma dos elementos da diagonal principal:",somaDaDiagonalSecundaria,"\n")
+	
+				
+			
+		}
+
+	}
+}
