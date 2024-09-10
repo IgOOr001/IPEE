@@ -1,0 +1,89 @@
+programa
+{   
+inclua biblioteca Matematica --> M
+	funcao inicio ()
+	{
+		cadeia unidadeDaCarga1,unidadeDaCarga2
+		real cargaEletrica1,cargaEletrica2 
+		real distancia,forcaEletrica 
+		real xo,yo,xf,yf
+		const real ELETROTASTICA=9*M.potencia(10.0,9.0)
+	
+		// Entrada 
+		escreva("Obs: As unidade das cargas elétricas estão limitada em :c,mc,uc\n")
+		escreva("Insira o algoritmo significativo da carga 1:")
+		leia(cargaEletrica1)
+		escreva("Insira a unidade da carga 1(SI):")
+		leia(unidadeDaCarga1)
+			
+		se(unidadeDaCarga1=="c" || unidadeDaCarga1=="C")
+		{
+		    cargaEletrica1=cargaEletrica1*1
+		}
+		senao se (unidadeDaCarga1=="mc" || unidadeDaCarga1=="Mc")
+		{
+			cargaEletrica1=cargaEletrica1*M.potencia(10.0,-3.0)
+		}
+		senao se ( unidadeDaCarga1=="uc" || unidadeDaCarga1=="Uc")
+	    {
+			cargaEletrica1=cargaEletrica1*M.potencia(10.0,-6.0)
+	    }
+		senao
+		{
+			escreva("Insira a unidade corretamente,por favor!")
+			retorne
+		}
+       
+		escreva("Insira o algoritmo significativo da carga 2:")
+		leia(cargaEletrica2)
+		escreva("Insira a unidade da carga 2 (SI):")
+		leia(unidadeDaCarga2)
+
+		
+		se(unidadeDaCarga2=="c" || unidadeDaCarga2=="C")
+		{
+		    cargaEletrica2=cargaEletrica2*1
+		}
+		senao se (unidadeDaCarga2=="mc" || unidadeDaCarga2=="Mc")
+		{
+		    cargaEletrica2=cargaEletrica2*M.potencia(10.0,-3.0)
+		}
+		senao se ( unidadeDaCarga2=="uc" || unidadeDaCarga2=="Uc")
+	    {
+	    	cargaEletrica2=cargaEletrica2*M.potencia(10.0,-6.0)
+	    }
+		senao
+		{
+			escreva("Insira a unidade corretamente,por favor!")
+			retorne
+		}
+		
+	    // Cargas nulas
+		logico cargasNulas =(cargaEletrica1==0.0 ou cargaEletrica2==0.0)
+		se(cargasNulas)
+		{
+			escreva("Insira as cargas elétricas com valores positivos,por favor!")
+			retorne
+		}
+		
+		escreva("Insira os pontos (xo,yo) das coordenada da carga 1,respectivamente:")
+		leia(xo)
+		leia(yo)
+		escreva("Insira os ponto (xf,yf) das coordenada da carga 2,respectivamente:")
+		leia(xf)
+		leia(yf)
+		
+		// processamento 
+		
+		distancia= M.raiz(M.potencia((xf-xo),2.0)+M.potencia((yf-yo),2.0),2.0)
+		forcaEletrica=M.arredondar((ELETROTASTICA*M.valor_absoluto(cargaEletrica1)*M.valor_absoluto(cargaEletrica2)/M.potencia(distancia,2.0)),3.0)
+		escreva("Distância entre as cargas:",distancia,"\n")
+		escreva("A constante:",ELETROTASTICA,"\n")
+		escreva("O valor da carga 1:",cargaEletrica1,"\n")
+		escreva("O valor da carga 2:",cargaEletrica2,"\n")
+
+	    escreva("O valor da força será:",forcaEletrica,"N\n")
+
+		
+	}
+}
