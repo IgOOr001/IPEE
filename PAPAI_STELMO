@@ -1,0 +1,39 @@
+programa
+{
+	inclua biblioteca Util --> U
+	funcao inicio ()
+	{
+		
+		caracter papai[]={'p','a','p','a','i'}
+	    caracter stelmo[]={'s','t','e','l','m','o'}
+
+		inteiro quantDeElementosDopapai= U.numero_elementos(papai)
+		inteiro quantDeElementosDoStelmo= U.numero_elementos(stelmo)
+
+		inteiro calmaAi=300
+		para(inteiro i=0;i<quantDeElementosDopapai;i++)
+		{
+			escreva(papai[i])
+			U.aguarde(calmaAi)
+			
+		}
+		
+		para(inteiro igor=0;igor<7;igor++)
+		{
+			
+			escreva("-")
+			U.aguarde(200)
+			
+		}
+		escreva("> ")
+		para(inteiro i=0;i<quantDeElementosDoStelmo;i++)
+		{
+			escreva(stelmo[i])
+			U.aguarde(calmaAi)
+			
+		}
+
+	}
+}
+
+
