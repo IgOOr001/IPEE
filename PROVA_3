@@ -1,0 +1,436 @@
+programa
+{
+	inclua biblioteca Matematica --> Mt
+	inclua biblioteca Util --> Ut
+
+	funcao mensagemDeErroDeBaterias()
+	{
+		escreva("\nErro: A quantidade de baterias não pode ser negativa, nula e não podem exceder o máximo permitido!\n")
+	}
+	funcao mensagemDeErroDastensoesInstantaneas()
+	{ 
+		escreva("\nErro: A tensão nominal não pode ser negativa, nula!\n")
+	}
+	funcao logico verificarEntradasErradasDeBaterias(inteiro quantDeBaterias, inteiro tamanhoMaxDeBaterias ) 
+	{
+		logico quantidadeDeBateriasInvalidas
+		quantidadeDeBateriasInvalidas = quantDeBaterias<=0 ou quantDeBaterias > tamanhoMaxDeBaterias
+		se(quantidadeDeBateriasInvalidas)
+		{ 
+			retorne verdadeiro 
+		}
+		senao
+		{
+			retorne falso
+		}
+	}
+	funcao logico verificarEntradasErradasDastensoesInstantaneas(real tensaoNominal ) 
+	{
+		logico tensoesInstantaneasInvalidas		
+		tensoesInstantaneasInvalidas= tensaoNominal <=0 	
+		se(tensoesInstantaneasInvalidas)
+		{ 
+			retorne verdadeiro 
+		}
+		senao
+		{
+			retorne falso
+		}
+	}
+	funcao sorteiaAsTensoesInstantaneas(real tensoesInstantaneas[],real tensaoNominal,inteiro quantidadeDeBaterias)
+	{
+		const real AUX_TENSAO = 0.157
+		const inteiro MINIM = 1, MAX = 6
+		
+		para(inteiro contagemDeBaterias=0;contagemDeBaterias<quantidadeDeBaterias;contagemDeBaterias++)
+		{
+			tensoesInstantaneas[contagemDeBaterias] = tensaoNominal - AUX_TENSAO * Ut.sorteia(MINIM, MAX)    
+		}	
+	}
+	funcao  exebirAsTensoesInstantaneasSorteiadas( real tensoesInstantaneas[],inteiro quantidadeDeBaterias, inteiro precisao)
+	{
+		escreva("\nAs tensões instantâneas[ Em volts]:\n ") 
+		para(inteiro contagemDeBaterias = 0; contagemDeBaterias <quantidadeDeBaterias ; contagemDeBaterias++ )
+		{
+			escreva("[",Mt.arredondar(tensoesInstantaneas[contagemDeBaterias],precisao),"] ")
+		}
+	}
+	funcao  somaDasTensoesInstantaneasSorteiadas( real &somaDasTensaoInstantanea, real tensoesInstantaneas[],inteiro quantidadeDeBaterias, inteiro precisao)
+	{
+		para(inteiro contagemDeBaterias = 0; contagemDeBaterias <quantidadeDeBaterias ; contagemDeBaterias++ )
+		{
+			somaDasTensaoInstantanea += tensoesInstantaneas[contagemDeBaterias]
+		}
+		exebirsomaDasTensoesInstantaneasSorteiadas(somaDasTensaoInstantanea,tensoesInstantaneas,quantidadeDeBaterias,precisao)
+		
+		somaDasTensaoInstantanea=0.0 // caso repitar o programa
+	}
+	funcao exebirsomaDasTensoesInstantaneasSorteiadas(real &somaDasTensaoInstantanea, real tensoesInstantaneas[],inteiro quantidadeDeBaterias, inteiro precisao)
+	{
+		escreva("\n\nA tensão real do sistema(soma das tensões instantâneas em volts):\n ")
+		escreva("[",Mt.arredondar(somaDasTensaoInstantanea,precisao),"] volts")
+	}
+
+	funcao maiorTensaoInstantaneas( real tensoesInstantaneas[],inteiro quantidadeDeBaterias, real &maiorTensao)
+	{
+		maiorTensao = tensoesInstantaneas[0]
+		para(inteiro contagemDeBaterias=0;contagemDeBaterias<quantidadeDeBaterias;contagemDeBaterias++)
+		{
+			se(tensoesInstantaneas[contagemDeBaterias] > maiorTensao)
+			{
+				maiorTensao = tensoesInstantaneas[contagemDeBaterias]
+			}
+		}
+	}
+	funcao menorTensaoInstantaneas( real tensoesInstantaneas[],inteiro quantidadeDeBaterias, real &menorTensao)
+	{
+		menorTensao = tensoesInstantaneas[0]
+		para(inteiro contagemDeBaterias=0;contagemDeBaterias<quantidadeDeBaterias;contagemDeBaterias++)
+		{
+			se(tensoesInstantaneas[contagemDeBaterias] < menorTensao)
+			{
+				menorTensao = tensoesInstantaneas[contagemDeBaterias]
+			}      
+		}        
+	}
+	funcao exibirMaiorTensaoEmenorTensaoInstantanea(real &maiorTensao,real &menorTensao)
+	{
+		escreva("\n\nA maior tensão: [",maiorTensao,"] Volts ")
+		escreva("\nA menor tensão: [",menorTensao,"] Volts ")
+	}
+
+	funcao  controleDeTensaoDasBaterias(real tensoesInstantaneas[], inteiro quantidadeDeBaterias, real tensaoNominal, real &maiorTensao, real &menorTensao, inteiro precisao)
+	{
+		real grauDeDesbalanceamento = maiorTensao / menorTensao
+		const real porcentagemDeDesbalanceamento = 1.05 // 100% + 5%
+		exibirOgrauDeDesbalanceamento(maiorTensao,menorTensao, precisao)
+		logico verificacaoDoDesbalaceamento = grauDeDesbalanceamento > porcentagemDeDesbalanceamento
+		se(verificacaoDoDesbalaceamento)
+		{    
+			escreva("\nAs baterias estão desbalaceadas!\n")
+			regulacaoDasTensoesDesbalanceadas(tensoesInstantaneas, quantidadeDeBaterias, menorTensao, porcentagemDeDesbalanceamento,precisao)
+		}
+		senao
+		{
+			escreva("\nAs baterias estão balaceadas!\n")
+			regulacaoDasTensoesBalanceadas(tensoesInstantaneas, quantidadeDeBaterias, tensaoNominal,precisao)	
+		}
+		
+		se (verificarSeTensoesSaoMaioresQueNominal(tensoesInstantaneas, quantidadeDeBaterias, tensaoNominal))
+		{
+			regulacaoDasTensoesParaNominal(tensoesInstantaneas, quantidadeDeBaterias, tensaoNominal,precisao)
+		}
+	}
+	funcao exibirOgrauDeDesbalanceamento(real &maiorTensao, real &menorTensao, inteiro precisao)
+	{
+		real grauDeDesbalanceamento = maiorTensao / menorTensao
+		escreva("\n\nO grau de desbalanceamento das baterias é de: ", Mt.arredondar((grauDeDesbalanceamento - 1) * 100, precisao), "%\n")
+	}
+
+	funcao regulacaoDasTensoesDesbalanceadas(real tensoesInstantaneas[], inteiro quantidadeDeBaterias, real &menorTensao, real porcentagemDeDesbalanceamento, inteiro precisao)
+	{
+		para(inteiro contagemDeBaterias=0;contagemDeBaterias<quantidadeDeBaterias;contagemDeBaterias++)
+		{
+			const real AUX_DE_TENSAO_2 = 0.15, AUX_DE_TENSAO_3 = 0.35
+			const inteiro MIM_2 = 4, MAX_2 = 5
+			
+			real disnivelDeTensao = tensoesInstantaneas[contagemDeBaterias] / menorTensao
+			logico verificacaoDeDisnivel = disnivelDeTensao > porcentagemDeDesbalanceamento	
+			se(verificacaoDeDisnivel)
+			{
+				escreva("\nA bateria ",contagemDeBaterias + 1, " tem o desnível de: ", Mt.arredondar((disnivelDeTensao - 1) * 100,precisao), "%\n")
+				escreva("\nA Bateria  está em descarregamento!\n")
+				tensoesInstantaneas[contagemDeBaterias] -= AUX_DE_TENSAO_2 * Ut.sorteia(MIM_2, MAX_2)
+			}
+			senao
+			{
+				escreva("\nA bateria ", contagemDeBaterias + 1, " tem o desnível de: ", Mt.arredondar((disnivelDeTensao - 1) * 100, precisao), "%\n")
+				escreva("\nA Bateria  está em carregamento!\n")
+				tensoesInstantaneas[contagemDeBaterias] += AUX_DE_TENSAO_3 * Ut.sorteia(MIM_2, MAX_2)
+			}
+		}
+		
+		exibirAsTensoesDesbalanceadas(tensoesInstantaneas,quantidadeDeBaterias,precisao)	
+	}
+	funcao exibirAsTensoesDesbalanceadas( real tensoesInstantaneas[],inteiro quantidadeDeBaterias, inteiro precisao)
+	{
+		escreva("\nAs tensões instantâneas quando as baterias estão desbalaceadas [em volts] é de:\n ") 
+		para(inteiro contagemDeBaterias = 0; contagemDeBaterias <quantidadeDeBaterias ; contagemDeBaterias++ )
+		{     
+			escreva("[",Mt.arredondar(tensoesInstantaneas[contagemDeBaterias],precisao),"] ")
+		}
+	}
+	funcao regulacaoDasTensoesBalanceadas(real tensoesInstantaneas[], inteiro quantidadeDeBaterias, real tensaoNominal, inteiro precisao)
+	{
+		const real AUX_DE_TENSAO_4 = 0.35
+		const inteiro MIN = 1, MAXIMO = 4
+		
+		para(inteiro contagemDeBaterias= 0; contagemDeBaterias< quantidadeDeBaterias; contagemDeBaterias++)
+		{
+			se(tensoesInstantaneas[contagemDeBaterias] <= tensaoNominal)
+			{
+				tensoesInstantaneas[contagemDeBaterias] += AUX_DE_TENSAO_4 * Ut.sorteia(MIN, MAXIMO)
+			}
+		}
+		exibirAsTensoesBalanceadas( tensoesInstantaneas, quantidadeDeBaterias,precisao)
+		escreva("\n")
+	}
+	funcao exibirAsTensoesBalanceadas( real tensoesInstantaneas[],inteiro quantidadeDeBaterias, inteiro precisao)
+	{
+		escreva("\nAs tensões instantâneas quando as baterias estão balaceadas [em volts]:\n ") 
+		para(inteiro contagemDeBaterias = 0; contagemDeBaterias <quantidadeDeBaterias ; contagemDeBaterias++ )
+		{  
+			escreva("[",Mt.arredondar(tensoesInstantaneas[contagemDeBaterias],precisao),"] ")
+		}
+	}
+	funcao logico verificarSeTensoesSaoMaioresQueNominal(real tensoesInstantaneas[], inteiro quantidadeDeBaterias, real tensaoNominal)
+	{
+		logico todasAsTensoesMaioresQueTensaoNominal = verdadeiro
+		para(inteiro contagemDeBaterias = 0; contagemDeBaterias < quantidadeDeBaterias; contagemDeBaterias++)
+		{
+			se(tensoesInstantaneas[contagemDeBaterias] <= tensaoNominal)
+			{
+				todasAsTensoesMaioresQueTensaoNominal = falso
+				pare
+			}
+		}
+		
+		retorne todasAsTensoesMaioresQueTensaoNominal 
+	} 
+	funcao regulacaoDasTensoesParaNominal(real tensoesInstantaneas[], inteiro quantidadeDeBaterias, real tensaoNominal, inteiro precisao)
+	{
+		const real AUX_DE_TENSAO_5 = 0.35
+		const inteiro MIM_5 = 1, MAX_5 = 4
+		para(inteiro contagemDeBaterias = 0; contagemDeBaterias < quantidadeDeBaterias;contagemDeBaterias++)
+		{
+			tensoesInstantaneas[contagemDeBaterias] -= AUX_DE_TENSAO_5 * Ut.sorteia(MIM_5, MAX_5)   
+		}
+		exibirAsTensoesMaioresQueTensaoNominal( tensoesInstantaneas, quantidadeDeBaterias,precisao)
+		escreva("\n")
+	}
+	funcao exibirAsTensoesMaioresQueTensaoNominal( real tensoesInstantaneas[],inteiro quantidadeDeBaterias, inteiro precisao)
+	{
+		escreva("\nOs valores das tensões quando todas as tensões são maiores que a tensão nominal [em volts]: \n")
+		para(inteiro contagemDeBaterias = 0; contagemDeBaterias <quantidadeDeBaterias ; contagemDeBaterias++ )
+		{   
+			escreva("[",Mt.arredondar(tensoesInstantaneas[contagemDeBaterias],precisao),"] ")
+		}
+	}
+	funcao logico bateriasDesbalanceadasNominalmente(inteiro quantidadeDeBaterias,real tensoesInstantaneas[],real tensaoNominal,inteiro precisao)
+	{
+		real grauDeDesbalanceamentoNominal
+		real moduloSomaDeBaterias=0.0
+		para(inteiro contagemDeBateria=0;contagemDeBateria<quantidadeDeBaterias;contagemDeBateria++)
+		{ 
+			moduloSomaDeBaterias+=Mt.valor_absoluto(tensoesInstantaneas[contagemDeBateria]-tensaoNominal)   
+		}
+		grauDeDesbalanceamentoNominal=1-moduloSomaDeBaterias/(quantidadeDeBaterias*tensaoNominal)
+		logico bateriasComDesbalanceamentoNominal=grauDeDesbalanceamentoNominal<0.95
+		retorne bateriasComDesbalanceamentoNominal
+	}
+	funcao exibirSeAsBateriasEstaoBalaceadasOuDesbalaceadas(inteiro  quantidadeDeBaterias,real tensoesInstantaneas[],real tensaoNominal,inteiro precisao)
+	{
+		real grauDeDesbalanceamentoNominal
+		real moduloSomaDeBaterias=0.0
+		para(inteiro contagemDeBateria=0;contagemDeBateria<quantidadeDeBaterias;contagemDeBateria++)
+		{ 
+			moduloSomaDeBaterias+=Mt.valor_absoluto(tensoesInstantaneas[contagemDeBateria]-tensaoNominal)   
+		}
+		grauDeDesbalanceamentoNominal=1-moduloSomaDeBaterias/(quantidadeDeBaterias*tensaoNominal)
+		escreva("\n\nO grau de desbalanceamento nominal:",Mt.arredondar(grauDeDesbalanceamentoNominal,precisao),"%\n")
+		logico bateriasComDesbalanceamentoNominal=grauDeDesbalanceamentoNominal<0.95
+		se(bateriasComDesbalanceamentoNominal)
+		{  
+			escreva("\nAs tensões da baterias estão desbalanceadas nominalmente!\n")
+			escreva("Repita novamente!\n\n")
+		}
+		senao
+		{
+			escreva("\nAs tensões das baterias estão balanceadas nominalmente!\n") 
+		}
+	
+	}
+	funcao calcularPorcentagemDeCarregamento(real tensoesInstantaneas[], real porcentagemDeCarregamento[], inteiro &quantidadeDeBaterias, real &tensaoNominal,inteiro precisao)
+	{
+		para(inteiro contagemDeBateria = 0; contagemDeBateria < quantidadeDeBaterias; contagemDeBateria++)
+		{
+			se(tensoesInstantaneas[contagemDeBateria] >= tensaoNominal)
+			{
+				porcentagemDeCarregamento[contagemDeBateria] = 100.0
+			}
+			senao
+			{
+				porcentagemDeCarregamento[contagemDeBateria] = Mt.arredondar((tensoesInstantaneas[contagemDeBateria] / tensaoNominal) * 100,precisao)
+			}
+		}
+	}
+	funcao exibirCarregamentoDasBaterias(real tensoesInstantaneas[], real porcentagemDeCarregamento[], inteiro quantidadeDeBaterias, real tensaoNominal)
+	{
+		
+		const inteiro NUM_BARRAS = 10
+		const inteiro TEMPO_ENTRE_PISCADAS = 200
+		escreva("\nVisualização do carregamento das baterias:\n\n")
+		para(inteiro contagemDeBateria = 0; contagemDeBateria < quantidadeDeBaterias; contagemDeBateria++)
+		{
+			logico tensaoMaiorOuIgualaNominal = tensoesInstantaneas[contagemDeBateria] > tensaoNominal
+			escreva("Bateria ",contagemDeBateria + 1, ": [")
+			se(tensaoMaiorOuIgualaNominal)
+			{
+				para(inteiro contagemDeBaterias= 0; contagemDeBaterias< NUM_BARRAS; contagemDeBaterias++)
+				{
+					escreva("|")
+					Ut.aguarde(TEMPO_ENTRE_PISCADAS)
+				}
+				escreva("]",porcentagemDeCarregamento[contagemDeBateria],"%")    
+				Ut.aguarde(TEMPO_ENTRE_PISCADAS)
+			}
+			senao
+			{
+				inteiro numeroDeBarras = porcentagemDeCarregamento[contagemDeBateria] / 10 // ahhhh trucamento nooooo
+				para(inteiro contagemDeBaterias= 0; contagemDeBaterias< NUM_BARRAS; contagemDeBaterias++)
+				{
+					se(contagemDeBaterias < numeroDeBarras)
+					{
+						escreva("|")
+						Ut.aguarde(TEMPO_ENTRE_PISCADAS)
+					}
+					senao
+					{
+						escreva(" ")
+						Ut.aguarde(TEMPO_ENTRE_PISCADAS)
+					}
+				}
+				escreva("]",porcentagemDeCarregamento[contagemDeBateria],"%")
+			}
+			escreva("\n")
+		}
+	}
+	funcao atualizacaoDasBaterias(inteiro quantidadeDeBaterias,real tensaoNominal,real tensoesInstantaneas[],real porcentagemDeCarregamento[],inteiro precisao)
+	{
+		
+		const inteiro NUM_BARRAS=10
+		const inteiro NUM_PISCADAS=3
+		inteiro numeroDeBarras
+		const inteiro TEMPO_ENTRE_PISCADAS=1000
+		const inteiro AUX_TEMPO = 200
+		const inteiro ATUALIZACAO=3	
+		Ut.aguarde(AUX_TEMPO)
+		limpa()	
+		para(inteiro cotagemDePiscagem = 0; cotagemDePiscagem < NUM_PISCADAS; cotagemDePiscagem++)
+		{
+			escreva("Atualização ",cotagemDePiscagem+1,"")
+			para(inteiro contagemDeBaterias =0;contagemDeBaterias <ATUALIZACAO;contagemDeBaterias++)
+			{
+				escreva(".")
+				Ut.aguarde(AUX_TEMPO)
+			}
+			escreva("\n")
+			Ut.aguarde( TEMPO_ENTRE_PISCADAS)
+			logico tensaoMaiorOuIgualaNominal
+			para(inteiro contagemDeBaterias=0;contagemDeBaterias<quantidadeDeBaterias;contagemDeBaterias++)
+			{   
+				tensaoMaiorOuIgualaNominal = tensoesInstantaneas[contagemDeBaterias] > tensaoNominal
+				se(tensaoMaiorOuIgualaNominal)
+				{   
+					escreva("Bateria ", contagemDeBaterias + 1, ":[||||||||||]",porcentagemDeCarregamento[contagemDeBaterias],"%")  
+				}
+				senao
+				{
+					numeroDeBarras = porcentagemDeCarregamento[contagemDeBaterias] / 10 // ahhhh de novo trucamento nooooo
+					escreva("Bateria ", contagemDeBaterias + 1, ":[")
+					para(inteiro x = 0; x <  numeroDeBarras; x++) 
+					{
+						escreva("|")
+					}
+					para(inteiro y =  numeroDeBarras; y < NUM_BARRAS; y++) 
+					{
+						escreva(" ")
+					}
+					escreva("]", Mt.arredondar(porcentagemDeCarregamento[contagemDeBaterias],precisao), "%")
+				}
+				escreva("\n")
+			}
+			Ut.aguarde(TEMPO_ENTRE_PISCADAS)
+			limpa()
+		}
+	}
+	funcao inicio ()
+	{
+		const inteiro TAMANHO_MAX_DE_BATERIAS = 10
+		const inteiro PRECISAO = 3
+		const inteiro TEMPO_DE_EXECUCAO_DO_PROGRAMA_EM_SEG = 60 // 1 minuto
+		const inteiro AUXILIAR_DE_TEMPO = 2000
+		real tensoesInstantaneas[TAMANHO_MAX_DE_BATERIAS]
+		real porcentagemDeCarregamentoDasBaterias[TAMANHO_MAX_DE_BATERIAS]
+		inteiro tempoTranscorrrido
+		real tensaoNominal
+		inteiro quantidadeDeBaterias
+		real somaDasTensaoInstantanea = 0.0
+		real maiorTensaoInstantanea = 0.0
+		real menorTensaoInstantanea = 0.0
+		
+		escreva("\n")
+		escreva("\nA quantidade máxima de baterias: ",TAMANHO_MAX_DE_BATERIAS)
+		
+		faca
+		{  
+			escreva("\nInsira a quantidade de baterias:")
+			leia(quantidadeDeBaterias)
+			
+			se(verificarEntradasErradasDeBaterias(quantidadeDeBaterias,TAMANHO_MAX_DE_BATERIAS ) )
+			{
+				mensagemDeErroDeBaterias()
+			}
+			
+		}enquanto(verificarEntradasErradasDeBaterias(quantidadeDeBaterias,TAMANHO_MAX_DE_BATERIAS ))
+			
+		faca
+		{  
+			escreva("\nInsira a tensão nominal:")
+			leia(tensaoNominal)
+			
+			se(verificarEntradasErradasDastensoesInstantaneas(tensaoNominal))
+			{
+				mensagemDeErroDastensoesInstantaneas()
+			}
+	
+		}enquanto(verificarEntradasErradasDastensoesInstantaneas(tensaoNominal))
+		
+		inteiro inicioDoPrograma = Ut.tempo_decorrido()
+		
+		faca
+		{ 
+		
+			sorteiaAsTensoesInstantaneas(tensoesInstantaneas,tensaoNominal,quantidadeDeBaterias)
+			
+			exebirAsTensoesInstantaneasSorteiadas(tensoesInstantaneas,quantidadeDeBaterias,PRECISAO)
+			
+			somaDasTensoesInstantaneasSorteiadas(somaDasTensaoInstantanea, tensoesInstantaneas, quantidadeDeBaterias, PRECISAO)
+			
+			maiorTensaoInstantaneas(tensoesInstantaneas,quantidadeDeBaterias,maiorTensaoInstantanea)
+			menorTensaoInstantaneas(tensoesInstantaneas,quantidadeDeBaterias,menorTensaoInstantanea)
+			
+			exibirMaiorTensaoEmenorTensaoInstantanea(maiorTensaoInstantanea,menorTensaoInstantanea)
+			
+			controleDeTensaoDasBaterias(tensoesInstantaneas, quantidadeDeBaterias, tensaoNominal, maiorTensaoInstantanea, menorTensaoInstantanea,PRECISAO)
+			
+			exibirSeAsBateriasEstaoBalaceadasOuDesbalaceadas(quantidadeDeBaterias,tensoesInstantaneas,tensaoNominal,PRECISAO)
+			calcularPorcentagemDeCarregamento(tensoesInstantaneas, porcentagemDeCarregamentoDasBaterias, quantidadeDeBaterias, tensaoNominal, PRECISAO)
+			
+			exibirCarregamentoDasBaterias(tensoesInstantaneas, porcentagemDeCarregamentoDasBaterias, quantidadeDeBaterias, tensaoNominal)
+			logico verificacao = verificarSeTensoesSaoMaioresQueNominal(tensoesInstantaneas, quantidadeDeBaterias, tensaoNominal)
+			
+			atualizacaoDasBaterias( quantidadeDeBaterias, tensaoNominal, tensoesInstantaneas,porcentagemDeCarregamentoDasBaterias,PRECISAO)
+			
+			tempoTranscorrrido = (Ut.tempo_decorrido() - inicioDoPrograma)/1000
+			escreva("\nO tempo de funcionamento do sistema é: ", tempoTranscorrrido," segundos.\n")
+			Ut.aguarde(AUXILIAR_DE_TEMPO)
+		
+		}enquanto( bateriasDesbalanceadasNominalmente( quantidadeDeBaterias, tensoesInstantaneas, tensaoNominal,PRECISAO) e tempoTranscorrrido < TEMPO_DE_EXECUCAO_DO_PROGRAMA_EM_SEG )
+		/*
+		 {
+		    valeu professor!!
+		 }
+		 */
+	}
+}
