@@ -1,0 +1,55 @@
+programa
+{
+	inclua biblioteca Matematica --> M
+	funcao inicio ()
+	{  
+	   // Entrada 
+	   real velocidadeInicial,velocidadeNoEixoX,velocidadeNoEixoY
+	   real tempo,alturaMax,alcanceMax,theta
+	   const real GRAVIDADE=9.8
+	   const real PI=3.1415
+	   
+	   escreva("Insira a velocidade inicial(em m/s) do objeto:")
+	   leia(velocidadeInicial)
+	   escreva("Insira o ângulo(θ) de lançamento:")
+	   leia(theta)
+	   
+	   se(velocidadeInicial<=0 ou theta<=0)
+	   {
+	   	
+	   	    escreva("Insira valores possíveis para os cálculos\nPor favor!")
+	   	    retorne 
+	   }
+	   
+	   // PROCESSAMENTO 
+	   
+	   // conversão de theta
+	   theta=theta*PI/180
+	   
+	   //decomposição[x,y] do vetor velocidade
+	   
+	   velocidadeNoEixoX=M.arredondar(velocidadeInicial*M.cosseno(theta),2.0)
+	   velocidadeNoEixoY=M.arredondar(velocidadeInicial*M.seno(theta),2.0)
+		
+	   // O tempo até atingi a altura max
+	   
+	   tempo=M.arredondar(((velocidadeInicial*M.seno(theta))/GRAVIDADE),2.0)
+	   
+	   // Altura máxima atingida 
+	  
+	   alturaMax=M.arredondar(((M.potencia(velocidadeInicial,2.0)*M.potencia(M.seno(theta),2.0)/(2*GRAVIDADE))),2.0)
+	   
+	   //Alcance máximo 
+	   
+	   alcanceMax=M.arredondar(((M.potencia(velocidadeInicial,2.0)*M.seno(2*theta))/GRAVIDADE),2.0)
+	   
+	   //SAÍDA 
+	   escreva("O valor |VoX| = ",velocidadeNoEixoX," m/s\n")
+	   escreva("O valor |Voy| = ",velocidadeNoEixoY," m/s\n")
+	   escreva("O instante necessário até atingir a altura máxima é equivalente à: ",tempo," segundos\n")
+	   escreva("A altura máxima atingida pelo objeto foi equivalente à: ",alturaMax," metros\n")	   
+	   escreva("O alcance máximo do objeto foi equivalente à: ",alcanceMax," metro")
+	   
+	   
+	}  
+}
