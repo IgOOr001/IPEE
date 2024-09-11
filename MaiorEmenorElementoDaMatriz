@@ -1,0 +1,96 @@
+programa
+{
+	
+	funcao inicio()
+	{
+		 const inteiro NUMERODELINHAS=3
+		 const inteiro NUMERODECOLUNAS=2  
+		 real  matriz_A[NUMERODELINHAS][NUMERODECOLUNAS]
+		 real maior,menor
+		 inteiro posicaoDaLinhas1=0,posicaoDaColunas1=0
+	      inteiro posicaoDaLinhas2=0,posicaoDaColunas2=0
+	
+		
+		escreva("Insira os elementos  da matriz A:\n")
+		para(inteiro linhas=0;linhas<NUMERODELINHAS;linhas++)
+		{
+			para(inteiro colunas=0;colunas<NUMERODECOLUNAS;colunas++)
+			{
+		
+		   escreva("Insira o valor do elemento na posição a",linhas+1,"",colunas+1,":")
+		   leia( matriz_A[linhas][colunas])
+			 /* 
+  				maior=matriz_A[linhas][colunas]
+			 	menor=matriz_A[linhas][colunas]
+			 */
+			 //o outro comentário poderia está no laço 
+		 	
+			}	 		
+		}
+		 
+		 // a comparação maior=matriz_A[linhas]colunas] armazenar o último valor
+		 // a comparação maior= matriz_A[0][0] pegar o primeiro valor 
+		
+		maior=matriz_A[0][0]
+		menor=matriz_A[0][0]
+
+		 
+		escreva("\n A matriz A:\n")
+		
+		para(inteiro linhas=0;linhas<NUMERODELINHAS;linhas++)
+		{
+			para(inteiro colunas=0;colunas<NUMERODECOLUNAS;colunas++)
+			{
+	   			escreva("[",matriz_A[linhas][colunas],"]")		
+			}
+			escreva("\n")	 		
+		}
+		  
+		para(inteiro linhas=0;linhas<NUMERODELINHAS;linhas++)
+		{
+			para(inteiro colunas=0;colunas<NUMERODECOLUNAS;colunas++)
+			{
+			// pegando o valor e comparamos com cada elemento da matriz 
+				se(matriz_A[linhas][colunas]>maior)
+				{
+					
+					maior=matriz_A[linhas][colunas]
+					posicaoDaLinhas1=linhas
+					posicaoDaColunas1=colunas
+				
+				}
+				se(matriz_A[linhas][colunas]<menor)
+				{
+					
+					menor=matriz_A[linhas][colunas]
+					posicaoDaLinhas2=linhas
+					posicaoDaColunas2=colunas
+				
+				}	
+	 		}
+		
+	      }
+	      
+			escreva("\nO maior valor da matriz será:",maior," está na posição ",posicaoDaLinhas1+1,posicaoDaColunas1+1)
+			escreva("\nO menor valor da matriz será:",menor," está na posição ",posicaoDaLinhas2+1,posicaoDaColunas2+1)
+
+		  
+		  		 		
+
+     
+		 	 
+		 
+	}
+}
+
+/* $$$ Portugol Studio $$$ 
+ * 
+ * Esta seção do arquivo guarda informações do Portugol Studio.
+ * Você pode apagá-la se estiver utilizando outro editor.
+ * 
+ * @POSICAO-CURSOR = 410; 
+ * @PONTOS-DE-PARADA = ;
+ * @SIMBOLOS-INSPECIONADOS = {matriz, 8, 9, 6};
+ * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
+ * @FILTRO-ARVORE-TIPOS-DE-SIMBOLO = variavel, vetor, matriz, funcao;
+ */
