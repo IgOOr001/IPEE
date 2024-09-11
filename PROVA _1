@@ -1,0 +1,272 @@
+programa
+{
+	inclua biblioteca Matematica --> Mt
+	inclua biblioteca Util --> Ut
+	
+	funcao inicio()
+	{
+		const inteiro NUMERO_DE_BATERIAS = 4
+		const real TENSAO_NOMINAL_DA_BATERIA_EM_V = 12.0
+		const real TENSAO_MAXIMA_DE_ENTRADA = 15.0
+		const real TENSAO_MINIMA_DE_ENTRADA = 10.0
+		//const real TENSAO_DE_SAIDA_EM_V = 48.0 //24, 36, 48 ou NUMERO_DE_BATERIAS * 12 V
+
+		const inteiro NUMERO_DE_DECIMAIS = 2//Letra b)
+
+		const real PERCENTUAL_BALANCEAMENTO = 0.05
+
+		//Letra i)
+		//Parﾃ｢metros de carga e descarga
+		const real INCREMENTO_DE_TENSAO = 0.05
+		const inteiro MINIMO_MULTIPLO = 0
+		const inteiro MAXIMO_MULTIPLO = 5				
+
+		real tensaoEmVDaBateria1, tensaoEmVDaBateria2, tensaoEmVDaBateria3, tensaoEmVDaBateria4
+/*-------------------------------------------ENTRADAS-----------------------------------------------------------------------------------------------*/
+		//Letra a)
+		//Leitura das tensﾃｵes durante a carga - simulando a obtenﾃｧﾃ｣o por sensores
+		//LEITURA DA BATERIA 01
+		escreva("Entre com a tensﾃ｣o em Volts da bateria 1\n")
+		leia(tensaoEmVDaBateria1)
+
+		se(tensaoEmVDaBateria1 < 0)//Pedido na prova
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 1 nﾃ｣o pode ser negativa.\n Ligaﾃｧﾃ｣o invertida da bateria.\n Controlador inoperante\n")
+			retorne
+		}
+		
+		se(tensaoEmVDaBateria1 == 0)//Pedido na prova
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 1 nﾃ｣o pode ser nula ou estﾃ｡ em curto.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}		
+
+		se(tensaoEmVDaBateria1 < TENSAO_MINIMA_DE_ENTRADA)//EXTRA PROVA
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 1 muito baixa.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+
+		se(tensaoEmVDaBateria1 > TENSAO_MAXIMA_DE_ENTRADA)//EXTRA PROVA
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 1 muito alta, pode estﾃ｡ em sobrecarga.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+		//LEITURA DA BATERIA 02
+		escreva("Entre com a tensﾃ｣o em Volts da bateria 2.\n")
+		leia(tensaoEmVDaBateria2)
+
+		se(tensaoEmVDaBateria2 < 0)//Pedido na prova
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 2 nﾃ｣o pode ser negativa.\n Ligaﾃｧﾃ｣o invertida da bateria.\n Controlador inoperante\n")
+			retorne
+		}
+		
+		se(tensaoEmVDaBateria2 == 0)//Pedido na prova
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 2 nﾃ｣o pode ser nula ou estﾃ｡ em curto.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}		
+
+		se(tensaoEmVDaBateria2 < TENSAO_MINIMA_DE_ENTRADA)//EXTRA PROVA
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 2 muito baixa.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+
+		se(tensaoEmVDaBateria2 > TENSAO_MAXIMA_DE_ENTRADA)//EXTRA PROVA
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 2 muito alta, pode estﾃ｡ em sobrecarga.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+		//LEITURA DA BATERIA 03
+		escreva("Entre com a tensﾃ｣o em Volts da bateria 3\n")
+		leia(tensaoEmVDaBateria3)
+
+		se(tensaoEmVDaBateria3 < 0)//Pedido na prova
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 3 nﾃ｣o pode ser negativa.\n Ligaﾃｧﾃ｣o invertida da bateria.\n Controlador inoperante\n")
+			retorne
+		}
+		
+		se(tensaoEmVDaBateria3 == 0)//Pedido na prova
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 3 nﾃ｣o pode ser nula ou estﾃ｡ em curto.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+
+		se(tensaoEmVDaBateria3 < TENSAO_MINIMA_DE_ENTRADA)//EXTRA PROVA
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 3 muito baixa.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+
+		se(tensaoEmVDaBateria3 > TENSAO_MAXIMA_DE_ENTRADA)//EXTRA PROVA
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 3 muito alta, pode estﾃ｡ em sobrecarga.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+
+		//LEITURA DA BATERIA 04
+		escreva("Entre com a tensﾃ｣o em Volts da bateria 4\n")
+		leia(tensaoEmVDaBateria4)
+
+		se(tensaoEmVDaBateria4 < 0)//Pedido na prova
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 4 nﾃ｣o pode ser negativa.\n Ligaﾃｧﾃ｣o invertida da bateria.\n Controlador inoperante\n")
+			retorne
+		}
+		
+		se(tensaoEmVDaBateria4 == 0)//Pedido na prova
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 4 nﾃ｣o pode ser nula ou estﾃ｡ em curto.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+
+		se(tensaoEmVDaBateria4 < TENSAO_MINIMA_DE_ENTRADA)//EXTRA PROVA
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 4 muito baixa.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+
+		se(tensaoEmVDaBateria4 > TENSAO_MAXIMA_DE_ENTRADA)//EXTRA PROVA
+		{
+			escreva("Tensﾃ｣o fornecida para bateria 4 muito alta, pode estﾃ｡ em sobrecarga.\n Problema na bateria ou sensor.\n Controlador inoperante\n")
+			retorne
+		}
+
+/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+		//Obtenﾃｧﾃ｣o da menor e a maior tensﾃ｣o
+		real menorTensao = tensaoEmVDaBateria1
+		real maiorTensao = tensaoEmVDaBateria1
+
+		se(tensaoEmVDaBateria2 < menorTensao)
+		{
+			menorTensao = tensaoEmVDaBateria2
+		}
+		senao
+		{
+			maiorTensao = tensaoEmVDaBateria2
+		}
+
+		se(tensaoEmVDaBateria3 < menorTensao)
+		{
+			menorTensao = tensaoEmVDaBateria3
+		}
+		senao se(tensaoEmVDaBateria3 > maiorTensao)
+		{
+			maiorTensao = tensaoEmVDaBateria3
+		}
+
+		se(tensaoEmVDaBateria4 < menorTensao)
+		{
+			menorTensao = tensaoEmVDaBateria4
+		}
+		senao se(tensaoEmVDaBateria4 > maiorTensao)
+		{
+			maiorTensao = tensaoEmVDaBateria4
+		}
+		//Letra e)
+		escreva("\nMenor tensﾃ｣o = ",menorTensao," V\n")
+		escreva("Maior tensﾃ｣o = ",maiorTensao," V\n\n")
+		
+
+		real desbalanceamentoDeTensaoDasBaterias = maiorTensao / menorTensao // EQUAﾃ�ﾃグ 01
+
+		real limiarDeBalanceamento = 1 + PERCENTUAL_BALANCEAMENTO // 1.05%
+
+		// Sﾃｳ executa caso haja desbalanceamento das baterias
+		se(desbalanceamentoDeTensaoDasBaterias > limiarDeBalanceamento)
+		{
+			escreva("Baterias desbalanceadas:\n")
+
+			real desequilibrioDeTensao = tensaoEmVDaBateria1 / menorTensao //EQUAﾃ�ﾃ０ 02
+
+			se(desequilibrioDeTensao > limiarDeBalanceamento)
+			{
+				escreva(" Bateria 1 sem carregamento\n")
+				
+				tensaoEmVDaBateria1 = tensaoEmVDaBateria1 - INCREMENTO_DE_TENSAO * Ut.sorteia(MINIMO_MULTIPLO,MAXIMO_MULTIPLO)//EQUAﾃ�ﾃグ 04
+			}
+			senao 
+			{
+				escreva(" Bateria 1 em carregamento\n")
+
+				tensaoEmVDaBateria1 = tensaoEmVDaBateria1 + INCREMENTO_DE_TENSAO * Ut.sorteia(MINIMO_MULTIPLO,MAXIMO_MULTIPLO)//EQUAﾃ�ﾃグ 04
+			}
+
+			escreva("\tTensﾃ｣o na bateria 1 = ",Mt.arredondar(tensaoEmVDaBateria1, NUMERO_DE_DECIMAIS)," V\n")
+
+			desequilibrioDeTensao = tensaoEmVDaBateria2 / menorTensao
+
+			se(desequilibrioDeTensao > limiarDeBalanceamento)
+			{
+				escreva(" Bateria 2 sem carregamento\n")
+
+				tensaoEmVDaBateria2 = tensaoEmVDaBateria2 - INCREMENTO_DE_TENSAO * Ut.sorteia(MINIMO_MULTIPLO,MAXIMO_MULTIPLO)//EQUAﾃ�ﾃグ 04
+			}
+			senao 
+			{
+				escreva(" Bateria 2 em carregamento\n")
+
+				tensaoEmVDaBateria2 = tensaoEmVDaBateria2 + INCREMENTO_DE_TENSAO * Ut.sorteia(MINIMO_MULTIPLO,MAXIMO_MULTIPLO)//EQUAﾃ�ﾃグ 04
+			}				
+
+			escreva("\tTensﾃ｣o na bateria 2 = ",Mt.arredondar(tensaoEmVDaBateria2, NUMERO_DE_DECIMAIS)," V\n")
+
+			desequilibrioDeTensao = tensaoEmVDaBateria3 / menorTensao
+
+			se(desequilibrioDeTensao > limiarDeBalanceamento)
+			{
+				escreva(" Bateria 3 sem carregamento\n")
+
+				tensaoEmVDaBateria3 = tensaoEmVDaBateria3 - INCREMENTO_DE_TENSAO * Ut.sorteia(MINIMO_MULTIPLO,MAXIMO_MULTIPLO)
+			}
+			senao 
+			{
+				escreva(" Bateria 3 em carregamento\n")
+
+				tensaoEmVDaBateria3 = tensaoEmVDaBateria3 + INCREMENTO_DE_TENSAO * Ut.sorteia(MINIMO_MULTIPLO,MAXIMO_MULTIPLO)
+			}				
+
+			escreva("\tTensﾃ｣o na bateria 3 = ",Mt.arredondar(tensaoEmVDaBateria3, NUMERO_DE_DECIMAIS)," V\n")
+
+			desequilibrioDeTensao = tensaoEmVDaBateria4 / menorTensao
+
+			se(desequilibrioDeTensao > limiarDeBalanceamento)
+			{
+				escreva(" Bateria 4 sem carregamento\n")
+
+				tensaoEmVDaBateria4 = tensaoEmVDaBateria4 - INCREMENTO_DE_TENSAO * Ut.sorteia(MINIMO_MULTIPLO,MAXIMO_MULTIPLO)
+			}
+			senao 
+			{
+				escreva(" Bateria 4 em carregamento\n")
+
+				tensaoEmVDaBateria4 = tensaoEmVDaBateria4 + INCREMENTO_DE_TENSAO * Ut.sorteia(MINIMO_MULTIPLO,MAXIMO_MULTIPLO)
+			}							
+
+			escreva("\tTensﾃ｣o na bateria 4 = ",Mt.arredondar(tensaoEmVDaBateria4, NUMERO_DE_DECIMAIS)," V\n\n")
+		}
+
+		limiarDeBalanceamento = 1 - PERCENTUAL_BALANCEAMENTO// 0.95 %
+
+		real desvioDeTensaoEmVDaBateria1 = tensaoEmVDaBateria1 - TENSAO_NOMINAL_DA_BATERIA_EM_V
+		real desvioDeTensaoEmVDaBateria2 = tensaoEmVDaBateria2 - TENSAO_NOMINAL_DA_BATERIA_EM_V
+		real desvioDeTensaoEmVDaBateria3 = tensaoEmVDaBateria3 - TENSAO_NOMINAL_DA_BATERIA_EM_V
+		real desvioDeTensaoEmVDaBateria4 = tensaoEmVDaBateria4 - TENSAO_NOMINAL_DA_BATERIA_EM_V
+
+		//EQUAﾃ�ﾃグ 03 Letra c)
+		real grauDeBalanceamentoDeCargaNominalDasBaterias = 1 - (Mt.valor_absoluto(desvioDeTensaoEmVDaBateria1) + Mt.valor_absoluto(desvioDeTensaoEmVDaBateria2) + Mt.valor_absoluto(desvioDeTensaoEmVDaBateria3) + Mt.valor_absoluto(desvioDeTensaoEmVDaBateria4)) / (NUMERO_DE_BATERIAS * TENSAO_NOMINAL_DA_BATERIA_EM_V)		
+		escreva("Grau de balanceamento de carga nominal das baterias = ",Mt.arredondar(grauDeBalanceamentoDeCargaNominalDasBaterias, NUMERO_DE_DECIMAIS),"\n")
+
+		se(grauDeBalanceamentoDeCargaNominalDasBaterias < limiarDeBalanceamento)
+		{
+			escreva(" Baterias desbalanceadas em relaﾃｧﾃ｣o ao valor nominal\n")
+		}
+		senao
+		{
+			escreva(" Baterias balanceadas em relaﾃｧﾃ｣o ao valor nominal\n")
+		}
+	}
+}
