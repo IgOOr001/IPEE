@@ -1,0 +1,37 @@
+programa
+{
+    inclua biblioteca Util --> U
+    funcao inicio()
+    {
+        real vetor[]={2.0, 5.0, 3.0,8.0,7.0,5.0,9.0}
+        inteiro quantDeElementosDoVetor = U.numero_elementos(vetor)
+        real vetor_a[100]
+        inteiro contador = 0
+         
+		escreva("\nO vetor A:\n")
+		para(inteiro j=0;j<quantDeElementosDoVetor;j++)
+		{
+			escreva("[",vetor[j],"]")
+		}
+
+        escreva("\n\nPosições onde o elemento é menor que o próximo:\n")
+        para (inteiro posicaoInicial = 0; posicaoInicial < quantDeElementosDoVetor - 1; posicaoInicial++)
+        {
+            se (vetor[posicaoInicial] < vetor[posicaoInicial + 1])
+            {
+                // Armazenar a posição onde o elemento é menor que o próximo
+                vetor_a[contador] = vetor[posicaoInicial]
+    			 escreva("\nO elemento [", vetor_a[contador], "] < [",vetor[posicaoInicial+1],"]\n")
+                contador++
+            }
+        }
+        escreva("\nO novo vetor:\n")
+		para(inteiro j=0;j<contador;j++)
+		{
+			escreva("[",vetor_a[j],"]")
+		}
+
+    }
+}
+		
+	
