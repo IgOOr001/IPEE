@@ -1,0 +1,261 @@
+programa
+{
+	inclua biblioteca Util --> Ut
+	inclua biblioteca Matematica --> Mt
+	
+	funcao inicio()
+	{
+		const inteiro NUMERO_MAXIMO_BATERIAS = 100
+		const inteiro TEMPO_DE_CARREGAMENTO_INFORMACOES_EOU_SENSORES = 2500
+		const inteiro TEMPO_MAXIMO_DE_EXECUCAO_DO_PROGRAMA_SEG = 30 //segundos
+		logico bateriasDesbalanceadasEmRelacaoAoValorNominal = falso
+		real tempoTranscorrrido
+		real vetor_TensaoBaterias[NUMERO_MAXIMO_BATERIAS]
+		inteiro numeroDeBaterias
+
+		//ENTRADAS
+		//ENTRADA DO NÚMERO DE BATERIAS
+		faca
+		{
+			escreva("Entre com a quantidade de baterias, observando o máximo de ",NUMERO_MAXIMO_BATERIAS, " baterias:\n")
+			leia(numeroDeBaterias)
+	
+			se(numeroDeBaterias > NUMERO_MAXIMO_BATERIAS ou numeroDeBaterias <= 0)
+			{
+				escreva ("\nQuantidade inválida. O valor não pode ser maior que a quantidade máxima ou menor/igual a zero. Corrija!\n")
+			}	
+		
+		}enquanto(numeroDeBaterias > NUMERO_MAXIMO_BATERIAS ou numeroDeBaterias <= 0)
+		
+
+			//ENTRADA DA TENSÃO NOMINAL DAS BATERIAS
+		real tensaoNominal
+		faca
+		{
+			escreva("Entre com a tensão nominal das baterias:\n")
+			leia(tensaoNominal)
+			
+			se(tensaoNominal <= 0)
+			{
+				escreva ("\nErro na entrada: tensão nominal nula ou negativa.\n")
+			}
+		}enquanto(tensaoNominal <= 0)	
+			
+//-------------------------------------------------------------------------------------
+		//PROCESSAMENTO E SAÍDAS	
+			//INÍCIO DO PROGRAMA (TEMPOS)
+		inteiro inicioDoPrograma = Ut.tempo_decorrido()
+				
+			//CONSTANTES PARA AS TENSÕES
+		const real INCREMENTO_DECREMENTO = 0.275
+		const inteiro VALOR_MAXIMO = 5
+		const inteiro VALOR_MINIMO = 0
+
+		faca
+		{
+			//SORTEIO DE TENSÃO DAS BATERIAS
+			para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+			{
+				vetor_TensaoBaterias[indice] = tensaoNominal - (INCREMENTO_DECREMENTO * Ut.sorteia(VALOR_MINIMO, VALOR_MAXIMO))
+			}
+			escreva("\n")
+
+			//EXIBIÇÃO DAS TENSÕES SORTEADAS
+			escreva("As tensões instantaneas em cada bateria são:\n")
+			para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+			{ 
+				escreva("Bateria ", indice+1,": ",Mt.arredondar(vetor_TensaoBaterias[indice], 3), " V.\n")
+			}
+			escreva("\n")
+			Ut.aguarde(TEMPO_DE_CARREGAMENTO_INFORMACOES_EOU_SENSORES)
+			
+			//EXIBIÇÃO DA TENSÃO NOMINAL 
+			escreva("Tensão Nominal do sistema de baterias: ",Mt.arredondar(tensaoNominal, 3),"\n")
+			Ut.aguarde(TEMPO_DE_CARREGAMENTO_INFORMACOES_EOU_SENSORES)
+				
+			//TENSÃO REAL DO SISTEMA DE BATERIAS
+			real somatorioTensoesInstantaneas = 0.0
+			para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+			{
+				somatorioTensoesInstantaneas+= vetor_TensaoBaterias[indice]
+			}
+			escreva("Tensão Real do sistema de baterias: ",Mt.arredondar(somatorioTensoesInstantaneas, 3),"\n\n")
+			Ut.aguarde(TEMPO_DE_CARREGAMENTO_INFORMACOES_EOU_SENSORES)
+			
+			//MAIOR E MENOR TENSÃO
+			real maior = vetor_TensaoBaterias[0]
+			real menor = vetor_TensaoBaterias[0]
+			
+			para (inteiro indice = 1; indice < numeroDeBaterias; indice++)
+			{
+				se (vetor_TensaoBaterias[indice] > maior)
+				{
+					maior = vetor_TensaoBaterias[indice]
+				}
+	
+				se (vetor_TensaoBaterias[indice] < menor)
+				{
+					menor = vetor_TensaoBaterias[indice]
+				}
+			}
+	
+			escreva ("Maior tensão: ", Mt.arredondar(maior,3))
+			escreva ("\nMenor tensão: ",  Mt.arredondar(menor,3), "\n\n")
+			Ut.aguarde(TEMPO_DE_CARREGAMENTO_INFORMACOES_EOU_SENSORES)
+			
+			//GRAU DE BALANCEAMENTO NOMINAL
+			real somaDeTensoes = 0.0
+			para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+			{
+				somaDeTensoes+= Mt.valor_absoluto( vetor_TensaoBaterias[indice] - tensaoNominal)
+			}
+	
+			real grauBalanceamentoNominal, grauDesbalanceamento
+			
+			grauBalanceamentoNominal = 1 - (somaDeTensoes)/(numeroDeBaterias * tensaoNominal)
+			escreva("O grau de balanceamento nominal = ",Mt.arredondar(grauBalanceamentoNominal, 3))
+			
+			//VERIFICAÇÃO SE BATERIAS ESTÃO DESBALANCEADAS
+			se(grauBalanceamentoNominal < 0.95)
+			{
+				escreva("\nBaterias desbalanceadas em relação ao valor nominal.\n")
+				bateriasDesbalanceadasEmRelacaoAoValorNominal = verdadeiro
+			}
+			senao
+			{
+				escreva("\nBaterias balanceadas em relação ao valor nominal\n")
+				bateriasDesbalanceadasEmRelacaoAoValorNominal = falso
+			}
+			Ut.aguarde(TEMPO_DE_CARREGAMENTO_INFORMACOES_EOU_SENSORES)
+			
+			//GRAU DE DESBALANCEAMENTO 
+			grauDesbalanceamento = maior/menor
+		
+			se(grauDesbalanceamento > 1.05)
+			{
+				escreva("\nBaterias desbalanceadas:\n")
+	
+				real vetor_DesnivelTensao[NUMERO_MAXIMO_BATERIAS]
+				
+				//DESNÍVEL DE TENSÃO
+				para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+				{
+					vetor_DesnivelTensao[indice] = vetor_TensaoBaterias[indice]/menor
+	
+					//ANÁLISE SE BATERIA ESTÁ EM DESNÍVEL DE TENSÃO 
+					escreva("Bateria ", indice+1, ":")
+					se(vetor_DesnivelTensao[indice] > 1.05)
+					{
+						escreva (" não carregando\n")
+						vetor_TensaoBaterias[indice] = tensaoNominal - (INCREMENTO_DECREMENTO * Ut.sorteia(VALOR_MINIMO, VALOR_MAXIMO))
+					}
+					senao
+					{
+						escreva (" carregando\n")
+						vetor_TensaoBaterias[indice] = tensaoNominal + (INCREMENTO_DECREMENTO * Ut.sorteia(VALOR_MINIMO, VALOR_MAXIMO))
+					}
+				}
+			}
+			senao
+			{
+				escreva("\nBaterias balanceadas")
+				//ATUALIZAÇÃO NO VALOR DA TENSÃO CASO ESTEJAM BALANCEADAS
+				para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+				{
+					se (vetor_TensaoBaterias[indice] < tensaoNominal)
+					{
+						vetor_TensaoBaterias[indice] = tensaoNominal + (INCREMENTO_DECREMENTO * Ut.sorteia(VALOR_MINIMO, VALOR_MAXIMO))
+					}
+				}
+			}
+
+				//VERIFICAÇÃO SE AS TENSÕES TODAS SÃO MAIORES OU IGUAIS À TENSÃO NOMINAL
+			logico todasTensoesSaoMaioresIguaisANominal = verdadeiro
+			para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+			{ 
+				se (vetor_TensaoBaterias[indice] >= tensaoNominal)
+				{
+					todasTensoesSaoMaioresIguaisANominal = verdadeiro
+				}
+				senao
+				{
+					todasTensoesSaoMaioresIguaisANominal = falso
+				}
+		
+				//ATUALIZAÇÃO NO VALOR DA TENSÃO CASO TODAS ESTEJAM BALANCEADAS
+				para (inteiro indice1 = 0; indice1 < numeroDeBaterias; indice1++)
+				{
+					se (todasTensoesSaoMaioresIguaisANominal)
+					{
+						vetor_TensaoBaterias[indice] = tensaoNominal - (INCREMENTO_DECREMENTO * Ut.sorteia(VALOR_MINIMO, VALOR_MAXIMO))
+					}
+				}
+			}
+	
+			escreva("\n")
+	
+				//EXIBIÇÃO DAS TENSÕES ATUALIZADAS
+			escreva (" Tensões das baterias atualizadas:\n")
+			para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+			{ 
+				escreva("  Bateria ", indice+1,": ",Mt.arredondar(vetor_TensaoBaterias[indice], 3), " V.\n")
+			}
+			escreva("\n")
+	
+	//-------------------------------------------------------------------------------------
+			const inteiro QUANT_DE_ATUALIZACOES_BATERIAS = 3
+			const inteiro TEMPO_DE_ATUALIZACAO_BATERIAS = 2000	
+			const inteiro TEMPO_DE_CARREGAMENTO_DOS_GRAFICOS = 5000	
+	
+			Ut.aguarde(TEMPO_DE_CARREGAMENTO_DOS_GRAFICOS)
+			
+			//"GRÁFICO" DE BATERIAS
+			para (inteiro indice1 = 0; indice1 < QUANT_DE_ATUALIZACOES_BATERIAS; indice1++) //DEFINE A QUANTI DE PISCADAS
+			{	
+				limpa()
+				escreva(indice1+1,"° ATUALIZAÇÃO:\n")
+				para (inteiro indice = 0; indice < numeroDeBaterias; indice++)
+				{
+					const inteiro BARRA_COMPLETA = 10
+					const inteiro PERCENTUAL_BARRA_COMPLETA = 100
+					
+					se(vetor_TensaoBaterias[indice] >= tensaoNominal)
+					{
+						//SE BATERRIA TIVER BARRA CHEIA
+							escreva("[Bateria ",indice+1,"]:[")
+							para(inteiro indice3 = 0; indice3 < BARRA_COMPLETA; indice3++)
+							{
+								escreva("|")
+							}
+							escreva("] ",Mt.arredondar(PERCENTUAL_BARRA_COMPLETA,3),"%.\n")
+					}
+						//CASOS AS BATERIAS NÃO ESTEJAM CHEIAS
+					se(vetor_TensaoBaterias[indice] < tensaoNominal)
+					{
+							real percentalDaBateria = (vetor_TensaoBaterias[indice]/tensaoNominal)*100
+							inteiro taxaDeCarga = (vetor_TensaoBaterias[indice]/tensaoNominal)*10 //VALOR INTEIRO QUE DEFINE A QUANT DE BARRAS
+							inteiro taxaRestanteDeCarga = 10 - taxaDeCarga //VALOR INTEIRO QUE DEFINE A QUANTIDADE DE BARRAS QUE NÃO SERÁ PREENCHIDA
+							
+							escreva("[Bateria ",indice+1,"]:[")
+							para(inteiro indice3 = 0; indice3 < taxaDeCarga; indice3++)
+							{
+								escreva("|")
+							}
+		
+							para(inteiro indice3 = 0; indice3 < taxaRestanteDeCarga; indice3++)
+							{
+								escreva("-")
+							}
+							escreva("] ",Mt.arredondar(percentalDaBateria,3),"%.\n")
+					}
+				}
+				Ut.aguarde(TEMPO_DE_ATUALIZACAO_BATERIAS)
+			}
+			limpa()
+			tempoTranscorrrido = (Ut.tempo_decorrido() - inicioDoPrograma)/1000
+			escreva("\nO tempo de funcionamento do sistema é: ", Mt.arredondar(tempoTranscorrrido, 3)," segundos.\n")
+		
+		}enquanto(bateriasDesbalanceadasEmRelacaoAoValorNominal ou tempoTranscorrrido < TEMPO_MAXIMO_DE_EXECUCAO_DO_PROGRAMA_SEG)
+		
+	}
+}
