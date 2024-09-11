@@ -1,0 +1,97 @@
+programa
+{
+	funcao inicio ()
+	{
+		const inteiro NUMERO_DE_LINHAS_A=3, NUMERO_DE_COLUNAS_A=2
+		const inteiro NUMERO_DE_LINHAS_B=2, NUMERO_DE_COLUNAS_B=3
+		real matriz_A[NUMERO_DE_LINHAS_A][NUMERO_DE_COLUNAS_A]
+		real matriz_B[NUMERO_DE_LINHAS_B][NUMERO_DE_COLUNAS_B]
+		real matriz_produto[NUMERO_DE_LINHAS_A][NUMERO_DE_COLUNAS_B]
+		inteiro linhas,colunas 
+		cadeia continua 
+		
+		 
+		 
+		 
+		 
+		 se(NUMERO_DE_COLUNAS_A==NUMERO_DE_LINHAS_B)
+		 {
+			   escreva("Insira os elementos da matriz A [",NUMERO_DE_LINHAS_A,"]","[",NUMERO_DE_COLUNAS_A,"]\n\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_A;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_A;colunas++)
+				   	  {
+				   	  	
+				   	  	 escreva("Insira o elemento na posição a",linhas+1,"",colunas+1,":")
+				   	  	 leia(matriz_A[linhas][colunas])
+				   	  	
+			   	      }
+			   	
+			   }
+			   escreva("\nMATRIZ A:\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_A;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_A;colunas++)
+				   	  {
+				   	  	
+				   	  	 escreva("[",matriz_A[linhas][colunas],"]")
+				   	  	 
+				   	  	
+			   	      }
+			   	  escreva("\n")
+			   	
+			   }
+			   escreva("\nInsira os elementos da matriz B [",NUMERO_DE_LINHAS_B,"][",NUMERO_DE_LINHAS_A,"]\n\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_B;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_B;colunas++)
+				   	  {
+				   	  	
+				   	  	 escreva("Insira o elemento na posição b",linhas+1,"",colunas+1,":")
+				   	  	 leia(matriz_B[linhas][colunas])
+				   	  	
+                      }
+			   	
+			   }
+			   escreva("\nMATRIZ B:\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_B;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_B;colunas++)
+				   	  {
+				   	  	
+				   	  	 escreva("[",matriz_B[linhas][colunas],"]")
+				   	  	 
+				   	  	
+				   	  }
+				   	  escreva("\n")
+			   	
+			   }
+			   escreva("\nO produto das Matrizes:\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_A;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_B;colunas++)
+				   	  {
+				   	  	 matriz_produto[linhas][colunas]=0.0
+				   	  	 para(inteiro k=0;k<NUMERO_DE_COLUNAS_A;k++)
+				   	  	 {
+				   	  		
+				   			 matriz_produto[linhas][colunas]+=matriz_A[linhas][k]*matriz_B[k][colunas]
+				   	  	 }
+				   	  	 escreva("[",matriz_produto[linhas][colunas],"]")
+				   	  	
+			   	       }
+			   	  escreva("\n")
+		      }
+		 }
+		 senao 
+		 {
+		 	escreva("\nInsira matrizes que possuem números de colunas da matriz A igual a número de linhas da matriz B\n")
+		 }
+		
+		
+		
+
+		
+		
+	}
+}
