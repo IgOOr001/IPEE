@@ -1,0 +1,163 @@
+programa
+{
+	inclua biblioteca Matematica --> Mt
+	funcao inicio ()
+	{
+		const inteiro QUATIDADE_DE_BATERIA=4
+		const inteiro PRECISAO=2
+		real bateria[QUATIDADE_DE_BATERIA]
+		inteiro contagemDeBateria
+		
+		escreva("\nA quantidade máxima de bateria:",QUATIDADE_DE_BATERIA," Baterias\n")
+		para(contagemDeBateria=0;contagemDeBateria<QUATIDADE_DE_BATERIA;contagemDeBateria++)
+		{
+			escreva("\nEntre com a tensão da bateria ", contagemDeBateria+1," em [volts]:")
+			leia(bateria[contagemDeBateria])
+			
+			se(bateria[contagemDeBateria]<0)
+			{
+				enquanto(bateria[contagemDeBateria]<0)
+			    {
+					escreva("\nErro:A ligação da bateria ",contagemDeBateria+1," está invertida!\n")
+					escreva("\nEntre com a tensão da bateria ",contagemDeBateria+1," em [volts]:")
+					leia(bateria[contagemDeBateria])
+				
+					se(bateria[contagemDeBateria]==0.0)
+				    {
+					   	enquanto(bateria[contagemDeBateria]==0.0)
+					    {
+							escreva("\nErro:A bateria ",contagemDeBateria+1," está em curto ou sensor com problema!\n")
+							escreva("\nEntre com a tensão da bateria ",contagemDeBateria+1," em [volts]:")
+							leia(bateria[contagemDeBateria])
+						}
+					}
+				}
+				
+			}
+			
+			se(bateria[contagemDeBateria]==0.0)
+			{
+			   	enquanto(bateria[contagemDeBateria]==0.0)
+			    {
+					escreva("\nErro:A bateria ",contagemDeBateria+1," está em curto ou sensor com problema!\n")
+					escreva("\nEntre com a tensão da bateria ",contagemDeBateria+1," em [volts]:")
+					leia(bateria[contagemDeBateria])
+					
+				    se(bateria[contagemDeBateria]<0)
+			        {
+						enquanto(bateria[contagemDeBateria]<0)
+					    {
+							escreva("\nErro:A ligação da bateria ",contagemDeBateria+1," está invertida!\n")
+							escreva("\nEntre com a tensão da bateria ",contagemDeBateria+1," em [volts]:")
+							leia(bateria[contagemDeBateria])
+						}
+					}
+				}
+
+			}
+			
+			
+		}
+		
+		// mostra as baterias Insiradas
+		escreva("\nBATERIAS:\n")
+		para(contagemDeBateria=0;contagemDeBateria<QUATIDADE_DE_BATERIA;contagemDeBateria++)
+		{
+				
+				escreva("[",bateria[contagemDeBateria],"]")
+		}
+		
+		real maiorBateria
+		real menorBateria
+		
+		maiorBateria=bateria[0]
+		menorBateria=bateria[0]
+		
+		para(contagemDeBateria=0;contagemDeBateria<QUATIDADE_DE_BATERIA;contagemDeBateria++)
+		{
+			para(contagemDeBateria=0;contagemDeBateria<QUATIDADE_DE_BATERIA;contagemDeBateria++)
+			{
+				
+				se(menorBateria>bateria[contagemDeBateria])
+				{
+					menorBateria=bateria[contagemDeBateria]
+				}
+				se(maiorBateria<bateria[contagemDeBateria])
+				{
+					
+					maiorBateria=bateria[contagemDeBateria]
+				}
+				
+		    }
+		
+		 }
+		 escreva("\n")
+		 escreva("\n A maior tesão:",maiorBateria)
+		 escreva("\n A menor tensão:",menorBateria,"\n")
+
+		 const real PORCENTAGEM_BATERIAS =0.05 //maior 5%,logo 100%+5%
+		 real grauDeDesbalanceamento= maiorBateria/menorBateria
+		 real porcentagemDeDesbalanceamento=1+PORCENTAGEM_BATERIAS 
+		 real disnivelDeTensao[QUATIDADE_DE_BATERIA]
+		 real porcentagemDeDisnivel=1+PORCENTAGEM_BATERIAS
+		 const inteiro TENSAO_NOMINAL_DAS_BATERIAS=12
+		 real grauDeDesbalanceamentoNominal
+		 real moduloSomaDeBaterias=0.0,somaDeBaterias=0.0
+		 
+		 escreva("\nO grau de desbalanceadas entre as baterias é:",Mt.arredondar((grauDeDesbalanceamento-1),PRECISAO)*100,"%\n")
+		 se(grauDeDesbalanceamento>porcentagemDeDesbalanceamento)
+		 {
+		     escreva("\nAs baterias insiradas estão desbalanceadas!\n")
+			 para(contagemDeBateria=0;contagemDeBateria<QUATIDADE_DE_BATERIA;contagemDeBateria++)
+			 {
+			 	
+			 	disnivelDeTensao[contagemDeBateria]=bateria[contagemDeBateria]/menorBateria
+			 	somaDeBaterias+=bateria[contagemDeBateria]
+			 	escreva("\nO desnível de bateria",contagemDeBateria+1,": ",bateria[contagemDeBateria],"/",menorBateria,"\n")
+		 
+			 	se(disnivelDeTensao[contagemDeBateria]>porcentagemDeDisnivel)
+			 	{
+			 			escreva("\nA bateria ",contagemDeBateria+1," tem porcentagem de disnivel de:",Mt.arredondar((disnivelDeTensao[contagemDeBateria]-1),PRECISAO)*100,"%\n")
+			 			escreva("\nA bateria sem carregamento!\n")
+			 	}
+			 	senao
+			 	{
+			 			escreva("\nA bateria ",contagemDeBateria+1," tem porcentagem de disnivel de:",Mt.arredondar((disnivelDeTensao[contagemDeBateria]-1),PRECISAO)*100,"%\n")
+			 			escreva("\nA bateria em carregamento!\n")
+			 	}
+			 }
+			 
+			 
+			 escreva("\nA soma das baterias será:",Mt.arredondar(somaDeBaterias,PRECISAO),"\n")
+		 }
+		 
+		 senao
+		 {
+		 	escreva("\nAs baterias insiradas estão balanceadas!\n")
+		 }
+		 
+
+		 para(contagemDeBateria=0;contagemDeBateria<QUATIDADE_DE_BATERIA;contagemDeBateria++)
+		 {
+		 	
+		      
+			  moduloSomaDeBaterias+=Mt.valor_absoluto(bateria[contagemDeBateria]-TENSAO_NOMINAL_DAS_BATERIAS)
+			  
+		 }
+		 
+		 grauDeDesbalanceamentoNominal=1-moduloSomaDeBaterias/(4*TENSAO_NOMINAL_DAS_BATERIAS)
+		 escreva("\nO grau de desbalanceamento nominal:",Mt.arredondar(grauDeDesbalanceamentoNominal,PRECISAO))
+		 
+		 se(grauDeDesbalanceamentoNominal<0.95)
+		 {
+		 	
+		 	escreva("\nAs tensões da bateria estão em desbalanceadas em relação a tensão nominal das baterias\n")
+		 	
+		 }
+		 senao
+		 {
+		 	escreva("\nBaterias balanceadas em relação a tensão nominal!\n")
+		 }
+
+	}
+}
