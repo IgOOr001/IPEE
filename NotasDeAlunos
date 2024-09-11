@@ -1,0 +1,120 @@
+programa
+{	
+	funcao inicio()
+	{
+		const inteiro MAX_DE_ALUNOS = 100, MAX_DE_NOTAS = 100
+		real notas[MAX_DE_ALUNOS][MAX_DE_NOTAS], medias[MAX_DE_ALUNOS],media_0[MAX_DE_ALUNOS]
+		cadeia nomesDeAlunos[MAX_DE_ALUNOS]
+          inteiro quatidadeDeAlunos
+		inteiro quatidadeDeNotas,aluno,nota	
+          inteiro opcao 
+
+		escreva("+--------------------------MENU----------------------------+\n")
+		escreva("+  1-Entrada dos nomes dos alunos e suas respectivas notas +\n")
+		escreva("+  2-O vetor média dos M alunos que possuem N notas        +\n")
+		escreva("+  3-Exibir os elementos de uma linha qualquer             +\n")
+		escreva("+  4-Exibir os elementos de uma coluna qualquer            +\n")
+		escreva("+  5-Sair                                                  +\n")
+		escreva("+----------------------------------------------------------+\n")
+
+		
+		escreva("\nInsira a opção desejada:")
+		leia(opcao)
+		
+		
+			escreva("\nObs: O máximo de alunos é ",MAX_DE_ALUNOS,".\n")
+			escreva("\nObs: O máximo de notas é ",MAX_DE_NOTAS,".\n")
+	          escreva("\nInsira a quantidade de alunos:")
+	          leia(quatidadeDeAlunos)
+	          escreva("Insira quantas notas tem cada aluno:")
+	          leia(quatidadeDeNotas)
+		
+
+		
+		logico verificarOsValores=falso 
+		enquanto(opcao!=5)
+          {
+              
+			se(opcao==1)
+			{
+			    
+			     verificarOsValores=verdadeiro 
+				para(inteiro i_Aluno = 1; i_Aluno <= quatidadeDeAlunos; i_Aluno++)
+				{
+					medias[i_Aluno] = 0.0
+					escreva("O nome do ",i_Aluno," aluno:\n")
+				     leia(nomesDeAlunos[i_Aluno])
+					 escreva("As notas do aluno ",nomesDeAlunos[i_Aluno],":\n")
+					para(inteiro j_Nota = 1; j_Nota <= quatidadeDeNotas; j_Nota++) //somando as NUMNOTAS notas dos alunos
+					{
+						escreva("Insira a nota ",j_Nota,":")
+						leia(notas[i_Aluno][j_Nota])
+						media_0[i_Aluno]=medias[i_Aluno]
+						medias[i_Aluno]+= notas[i_Aluno][j_Nota] //somando as notas do aluno i
+					}
+					medias[i_Aluno] /= quatidadeDeNotas 
+					//medias[i] = medias[i] / NUMNOTAS
+				}    	
+		     }
+		
+	        
+			se(opcao==2)
+			{
+				
+				se(verificarOsValores)
+				{
+					escreva("Os elementos do vetor média são:\n")
+					para(inteiro i_Aluno = 1; i_Aluno <= quatidadeDeAlunos; i_Aluno++)
+					{		
+						escreva("Média do ",i_Aluno," aluno ",nomesDeAlunos[i_Aluno]," é: ",medias[i_Aluno],"\n")
+					}
+				}
+				senao
+				{
+					escreva("\nInsira primeiro as notas dos alunos, por favor!\n")
+				}		
+			}
+			se(opcao==3)
+			{
+				
+				inteiro j_Aluno
+				se(verificarOsValores)
+				{
+					escreva("Entre com a linha (aluno) desejada\n")
+					leia(j_Aluno)
+					escreva("As ",quatidadeDeNotas," notas do aluno ",nomesDeAlunos[j_Aluno]," são: \n")
+					para(inteiro i_Nota = 1; i_Nota <= quatidadeDeNotas; i_Nota++)
+					{
+						escreva(notas[j_Aluno][i_Nota]," ")
+					}
+				}
+				senao
+				{
+					escreva("\nInsira primeiro as notas dos alunos, por favor!\n")
+				}
+			}
+			se(opcao==4)
+			{
+				inteiro i_Nota,j_Aluno
+				se(verificarOsValores)
+				{
+					escreva("\nEntre com a coluna (nota) desejada\n")
+					leia(i_Nota)
+					
+					para(j_Aluno = 1; j_Aluno <= quatidadeDeAlunos; j_Aluno++)
+					{
+						escreva("A nota", i_Nota , " do ",nomesDeAlunos[j_Aluno] , " é: ",notas[j_Aluno][i_Nota],"\n")
+				     }
+				}
+				senao
+				{
+					escreva("\nInsira primeiroas notas dos alunos, por favor!\n")
+				}
+		     }
+			 
+	    		escreva("\nInsira a nova opção:")
+		     leia(opcao)
+		}
+
+	}
+}
