@@ -1,0 +1,105 @@
+programa
+{
+	funcao inicio ()
+	{
+		const inteiro NUMERO_DE_LINHAS_A=3, NUMERO_DE_COLUNAS_A=2
+		const inteiro NUMERO_DE_LINHAS_B=3, NUMERO_DE_COLUNAS_B=2
+		real matriz_A[NUMERO_DE_LINHAS_A][NUMERO_DE_COLUNAS_A]
+		real matriz_B[NUMERO_DE_LINHAS_B][NUMERO_DE_COLUNAS_B]
+		real matriz_produto[NUMERO_DE_LINHAS_A][NUMERO_DE_COLUNAS_B]
+		inteiro linhas,colunas 
+		
+		
+		 
+		// As matrizes tem que ser iguais
+		logico matriz_iguais = NUMERO_DE_LINHAS_A==NUMERO_DE_LINHAS_B e NUMERO_DE_COLUNAS_A==NUMERO_DE_COLUNAS_B
+		se(matriz_iguais)
+        	{
+			   escreva("Insira os elementos da matriz A [",NUMERO_DE_LINHAS_A,"]","[",NUMERO_DE_COLUNAS_A,"]\n\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_A;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_A;colunas++)
+				   	  {
+				   	  	
+				   	  	 escreva("Insira o elemento na posição a",linhas+1,"",colunas+1,":")
+				   	  	 leia(matriz_A[linhas][colunas])
+				   	  	
+			   	      }
+			   	
+			   }
+			   escreva("\nMATRIZ A:\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_A;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_A;colunas++)
+				   	  {
+				   	  	
+				   	  	 escreva("[",matriz_A[linhas][colunas],"]")
+				   	  	 
+				   	  	
+			   	      }
+			   	  escreva("\n")
+			   	
+			   }
+			   escreva("\nInsira os elementos da matriz B [",NUMERO_DE_LINHAS_B,"][",NUMERO_DE_LINHAS_A,"]\n\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_B;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_B;colunas++)
+				   	  {
+				   	  	
+				   	  	 escreva("Insira o elemento na posição b",linhas+1,"",colunas+1,":")
+				   	  	 leia(matriz_B[linhas][colunas])
+				   	  	
+                      }
+			   	
+			   }
+			   escreva("\nMATRIZ B:\n")
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_B;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_B;colunas++)
+				   	  {
+				   	  	
+				   	  	 escreva("[",matriz_B[linhas][colunas],"]")
+				   	  	 
+				   	  	
+				   	  }
+				   	  escreva("\n")
+			   	
+			   }
+			   
+			   // verifica se as matriz são iguais 
+			   //a11==b11,an+1==bn+1
+			   logico elementosIguais = verdadeiro
+			   para(linhas=0;linhas<NUMERO_DE_LINHAS_A;linhas++)
+			   {
+				   	  para(colunas=0;colunas<NUMERO_DE_COLUNAS_B;colunas++)
+				   	  {
+				   	  	  se(matriz_A[linhas][colunas]!=matriz_B[linhas][colunas])
+				   	  	  {
+				   	  	  	
+				   	  	  	 elementosIguais= falso
+				   	  	  	
+				   	  	  }
+				   	  
+			   	      }
+			   	
+		       }
+			   
+			   se(elementosIguais)
+			   {	
+			   	 	escreva("\nOs elementos da matriz A == Matriz B")
+			   }
+			   senao
+			   {
+			   	  	escreva("\nOs elementos da Matriz A != Matriz B")
+			   }
+			   
+		}
+	    	senao
+		{
+			escreva("As matriz são diferentes: Matriz A[",NUMERO_DE_LINHAS_A,"][",NUMERO_DE_COLUNAS_A,"] != Matriz B[",NUMERO_DE_LINHAS_B,"][",NUMERO_DE_COLUNAS_B,"]")
+		}
+	
+		
+		
+	}
+}
