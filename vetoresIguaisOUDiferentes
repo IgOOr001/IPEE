@@ -1,0 +1,80 @@
+programa
+{
+	
+	funcao inicio()
+	{    
+	
+	     const inteiro TAMANHO_DO_VETOR_A=5
+		real vetor_A[TAMANHO_DO_VETOR_A]
+		real numeroQualquer
+		
+        
+          escreva("Insira os elemento do vetor A:\n")
+		para(inteiro contagemDeInteracao=0;contagemDeInteracao<TAMANHO_DO_VETOR_A;contagemDeInteracao++)
+		{	
+			 escreva("Insira o elemento ",contagemDeInteracao+1,":")
+			 leia(vetor_A[contagemDeInteracao])
+			 
+			 
+		}
+		limpa()
+		escreva("\nO vetor A:\n")
+		para(inteiro contagem=0;contagem<TAMANHO_DO_VETOR_A;contagem++)
+		{	
+			 escreva("[",vetor_A[contagem],"]")
+				
+		}
+		
+          
+          // processamento 
+          logico valoresDiferentesDoVetor=falso
+		para(inteiro contagem=0;contagem<TAMANHO_DO_VETOR_A;contagem++)
+		{
+			para(inteiro i=0;i<TAMANHO_DO_VETOR_A;i++)
+			{
+				 se(vetor_A[contagem] != vetor_A[i])
+				 {
+				 		valoresDiferentesDoVetor= verdadeiro
+				 }
+			}
+		}
+		escreva("\n")
+		
+		se(valoresDiferentesDoVetor)
+		{
+			escreva("\nOs elementos do vetor A são diferentes\n")
+			// pra fazer graça
+			para(inteiro contagem=0;contagem<TAMANHO_DO_VETOR_A;contagem++)
+		     {
+		    	   se(contagem<TAMANHO_DO_VETOR_A-1)
+		    	   {
+		    	   	
+		       		escreva("[",vetor_A[contagem],"]≠")
+		    	   }
+		    	   senao
+		    	   {
+		    	   	
+		    	   		escreva("[",vetor_A[contagem],"]")
+		    	   }
+		     }
+		}
+		senao
+		{
+			escreva("\nOs elementos do vetor A são Iguais\n ")
+			// pra fazer graça
+			para(inteiro contagem=0;contagem<TAMANHO_DO_VETOR_A;contagem++)
+		     {
+		    	   se(contagem<TAMANHO_DO_VETOR_A-1)
+		    	   {
+		       		escreva("[",vetor_A[contagem],"]=")
+		    	   }
+		    	   senao
+		    	   {
+		    	   		escreva("[",vetor_A[contagem],"]")
+		    	   }
+		     }
+		}
+		
+	
+	}
+}
